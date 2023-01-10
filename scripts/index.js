@@ -1,5 +1,6 @@
-import { world } from "@minecraft/server";
-import { runCommand } from "./util/function.js";
+import { world, system } from "@minecraft/server";
+import { runCommand, getScore, get } from "./util/function.js";
+// import "./project/marble.js"
 import "./default/dankey.js";
 import "./default/gamemode.js";
 import "./util/sneak.js";
@@ -12,7 +13,16 @@ import { PlayerInventory } from "./util/inventory.js";
 //     return dis;
 // }
 let b;
+// world.getDimension('overworld').runCommandAsync('a')
+// runCommand(`scoreboard players add a a 1`)
+// runCommand(`say ${get('a','a')}`)
+async function sayHi () {
+    let result = await runCommand('say hi')
+    return result;
+}
+runCommand(`say ${typeof sayHi()}`)
 world.events.tick.subscribe(() => {
+    
     // storage.addGlobal('ab','a')
     // storage.setGlobal('ab','b')
     // runCommand(`say ${storage.getGlobal('ab')}`) 

@@ -1,3 +1,5 @@
-let ar = ['abc','ab','c']
-ar = ar.find(v=>v.startsWith('a'))
-console.log(ar)
+let pr = new Promise((resolve, reject)=>{
+    resolve(1)
+}) 
+pr.then(console.log('a'))
+console.log('b')

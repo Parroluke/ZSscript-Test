@@ -15,13 +15,31 @@ export function setPlrVelocity(velocity, p) {
 export function runCommand(command) {
     return world.getDimension('overworld').runCommandAsync(command);
 }
-export function getScore(target, objective) {
-    const obj = world.scoreboard.getObjective(objective);
-    if (typeof target == 'string') {
-        return obj.getScore(obj.getParticipants().find(v => v.displayName === target));
-    }
-    return obj.getScore(target.scoreboard);
+export async function getScore(target, objective) {
+    let re;
+    await runCommand(`scoreboard players add ${target} ${objective} 0`).then((a)=>{
+        
+        const obj = world.scoreboard.getObjective(objective);
+        if (typeof target == 'string') {
+            re = obj.getScore(obj.getParticipants().find(v => v.displayName === target));
+        }
+        else re = obj.getScore(target.scoreboard);
+        runCommand(`scoreboard players set get a ${re}`)
+    })
+    
+    return re;
+    
 }
+export function get(t,o) {
+    getScore(t,o)
+    const obj = world.scoreboard.getObjective(o);
+    if (typeof t == 'string') {
+        return obj.getScore(obj.getParticipants().find(v => v.displayName === t));
+    }
+    else return obj.getScore(t.scoreboard);
+}
+
+
 export function tellraw(selector, text) {
     if (selector.substr(0, 1) != "@") {
         runCommand(`tellraw "${selector}" {"rawtext":[{"text":"${text.replace("\"", "\'")}"}]}`);
@@ -66,5 +84,5 @@ export function findPlayer(name) {
 //     return (tags);
 // }
 export function getPlayerWithTag(tag) {
-    world.getPlayers({ tags: [tag] });
+    return [...world.getPlayers({ tags: [tag] })][0];
 }
